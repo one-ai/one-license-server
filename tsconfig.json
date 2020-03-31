@@ -16,7 +16,8 @@
       "@daos/*": ["app/daos/*"],
       "@entities/*": ["app/entities/*"],
       "@shared/*": ["app/shared/*"],
-      "@server": ["app/Server"]
+      "@server": ["app/Server"],
+      "@config": ["app/config/*"]
     },
     "types": ["node"],
     "typeRoots": ["node_modules/@types"]

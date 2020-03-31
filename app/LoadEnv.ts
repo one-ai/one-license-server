@@ -1,21 +1,17 @@
 import dotenv from 'dotenv';
-import commandLineArgs from 'command-line-args';
+import { REQUIRED_ENV } from './config/env';
 
-// Setup command line options
-const options = commandLineArgs([
-    {
-        name: 'env',
-        alias: 'e',
-        defaultValue: 'production',
-        type: String,
-    },
-]);
+if (process.env.NODE_ENV !== 'production') {
+    // When not production environment
+    const loadResult = dotenv.config({
+        path: `./env/development.env`,
+    });
 
-// Set the env file
-const result2 = dotenv.config({
-    path: `./env/${options.env}.env`,
-});
-
-if (result2.error) {
-    throw result2.error;
+    if (loadResult.error) {
+        throw loadResult.error;
+    }
 }
+
+const missingVars: string[] = REQUIRED_ENV.filter((name: string) => process.env[name] === undefined);
+if (missingVars.length)
+    throw new Error('Missing environment variables, ' + missingVars.join());
