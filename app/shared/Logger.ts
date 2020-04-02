@@ -20,7 +20,7 @@ const logger = createLogger({
  * For development, print to the console.
  */
 
-const errorStackFormat = format(info => {
+const errorStackFormat = format((info) => {
     if (info.stack) {
         // tslint:disable-next-line:no-console
         console.log(info.stack);

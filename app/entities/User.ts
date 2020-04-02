@@ -5,7 +5,6 @@ export interface IUser {
 }
 
 class User implements IUser {
-
     public id: number;
     public name: string;
     public email: string;

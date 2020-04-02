@@ -3,10 +3,7 @@ import { getRandomInt } from '@shared/functions';
 import { MockDaoMock } from '../MockDb/MockDao.mock';
 import { IUserDao } from './UserDao';
 
-
 class UserDao extends MockDaoMock implements IUserDao {
-
-
     public async getOne(email: string): Promise<IUser | null> {
         try {
             const db = await super.openDb();
@@ -21,7 +18,6 @@ class UserDao extends MockDaoMock implements IUserDao {
         }
     }
 
-
     public async getAll(): Promise<IUser[]> {
         try {
             const db = await super.openDb();
@@ -30,7 +26,6 @@ class UserDao extends MockDaoMock implements IUserDao {
             throw err;
         }
     }
-
 
     public async add(user: IUser): Promise<void> {
         try {
@@ -42,7 +37,6 @@ class UserDao extends MockDaoMock implements IUserDao {
             throw err;
         }
     }
-
 
     public async update(user: IUser): Promise<void> {
         try {
@@ -59,7 +53,6 @@ class UserDao extends MockDaoMock implements IUserDao {
             throw err;
         }
     }
-
 
     public async delete(id: number): Promise<void> {
         try {
