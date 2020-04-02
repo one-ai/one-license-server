@@ -13,5 +13,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const missingVars: string[] = REQUIRED_ENV.filter((name: string) => process.env[name] === undefined);
-if (missingVars.length)
-    throw new Error('Missing environment variables, ' + missingVars.join());
+if (missingVars.length) throw new Error('Missing environment variables, ' + missingVars.join());
