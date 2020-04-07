@@ -1,11 +1,11 @@
 import { Request, Response, Router } from 'express';
-import { OK } from 'http-status-codes';
+import SuccessHandler from '@shared/SuccessHandler';
 
 // Init shared
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-    return res.status(OK).json('Server is alive :D');
+    return new SuccessHandler('Server is alive :D', res);
 });
 
 export default router;

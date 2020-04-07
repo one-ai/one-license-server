@@ -4,13 +4,14 @@ import path from 'path';
 import helmet from 'helmet';
 
 import express, { Request, Response, NextFunction } from 'express';
-import { BAD_REQUEST } from 'http-status-codes';
 import 'express-async-errors';
 
 import BaseRouter from './routes';
-import logger from '@shared/Logger';
 
 import './models'; // Initialize database
+import CustomError from '@shared/CustomError';
+import { ErrorHandler } from '@shared/ErrorHandler';
+import { ERROR_CODES } from '@config/ErrorCodes';
 
 // Init express
 const app = express();
@@ -32,12 +33,15 @@ if (process.env.NODE_ENV === 'production') {
 // Add APIs
 app.use('/api', BaseRouter);
 
+// Invalid endpoint
+app.use(() => {
+    throw new CustomError(ERROR_CODES.ENDPOINT_NOT_FOUND);
+});
+
 // Print API errors
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    logger.error(err.message, err);
-    return res.status(BAD_REQUEST).json({
-        error: err.message,
-    });
+app.use((err: Error | CustomError, req: Request, res: Response, next: NextFunction) => {
+    new ErrorHandler(err, req, res);
+    next();
 });
 
 if (process.env.NODE_ENV === 'production') {
