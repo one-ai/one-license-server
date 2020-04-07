@@ -13,11 +13,10 @@
         "target": "es6",
         "moduleResolution": "node",
         "paths": {
-            "@daos/*": ["app/daos/*"],
             "@entities/*": ["app/entities/*"],
             "@shared/*": ["app/shared/*"],
             "@server": ["app/Server"],
-            "@config": ["app/config/*"]
+            "@config/*": ["app/config/*"]
         },
         "types": ["node", "jest"],
         "typeRoots": ["node_modules/@types"]
