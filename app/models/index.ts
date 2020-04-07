@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '@shared/Logger';
+import logger from '@core/Logger';
 
 const MONGO_PROTOCOL = process.env.MONGO_PROTOCOL || 'mongodb';
 const MONGO_HOST = process.env.MONGO_HOST || '';

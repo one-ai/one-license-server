@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import SuccessHandler from '@shared/SuccessHandler';
+import SuccessHandler from '@core/SuccessHandler';
 
 // Init shared
 const router = Router();
