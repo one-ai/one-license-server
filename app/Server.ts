@@ -10,6 +10,8 @@ import 'express-async-errors';
 import BaseRouter from './routes';
 import logger from '@shared/Logger';
 
+import './models'; // Initialize database
+
 // Init express
 const app = express();
 
