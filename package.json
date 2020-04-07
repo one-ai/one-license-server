@@ -14,9 +14,8 @@
         "pre-commit": "npm run lint"
     },
     "_moduleAliases": {
-        "@daos": "dist/daos",
         "@entities": "dist/entities",
-        "@shared": "dist/shared",
+        "@core": "dist/core",
         "@server": "dist/Server",
         "@config": "dist/config"
     },

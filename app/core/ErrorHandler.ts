@@ -1,7 +1,7 @@
-import CustomError from './CustomError';
+import CustomError from '@core/CustomError';
 import { Response, Request } from 'express';
 import { ERROR_CODES, ERRORS } from '@config/ErrorCodes';
-import logger from './Logger';
+import logger from '@core/Logger';
 const serviceName = 'one-license-server';
 
 export class ErrorHandler extends Error {

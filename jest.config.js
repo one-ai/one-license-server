@@ -80,8 +80,7 @@ module.exports = {
 
     // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
     moduleNameMapper: {
-        '^@shared(.*)$': '<rootDir>/app/shared$1',
-        '^@daos(.*)$': '<rootDir>/app/daos$1',
+        '^@core(.*)$': '<rootDir>/app/core$1',
         '^@entities(.*)$': '<rootDir>/app/entities$1',
         '^@server(.*)$': '<rootDir>/app/Server',
         '^@config(.*)$': '<rootDir>/app/config$1',

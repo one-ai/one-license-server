@@ -9,8 +9,8 @@ import 'express-async-errors';
 import BaseRouter from './routes';
 
 import './models'; // Initialize database
-import CustomError from '@shared/CustomError';
-import { ErrorHandler } from '@shared/ErrorHandler';
+import CustomError from '@core/CustomError';
+import { ErrorHandler } from '@core/ErrorHandler';
 import { ERROR_CODES } from '@config/ErrorCodes';
 
 // Init express
