@@ -36,11 +36,6 @@ app.use('/api', BaseRouter);
 // Serve any static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handle React routing, return all requests to React app
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 // Invalid endpoint
 app.use(() => {
     throw new CustomError(ERROR_CODES.ENDPOINT_NOT_FOUND);
@@ -49,7 +44,6 @@ app.use(() => {
 // Print API errors
 app.use((err: Error | CustomError, req: Request, res: Response, next: NextFunction) => {
     new ErrorHandler(err, req, res);
-    next();
 });
 
 // Export express instance
