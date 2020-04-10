@@ -1,6 +1,6 @@
-import { ERROR_CODES } from '@config/ErrorCodes';
+import { ERROR_CODES } from '@config';
 
-export default class CustomError {
+export class CustomError {
     errorCode: ERROR_CODES;
     constructor(errorCode: ERROR_CODES) {
         this.errorCode = errorCode;

@@ -10,6 +10,8 @@ export const enum ERROR_CODES {
     TOKEN_NOT_FOUND = 'TOKEN_NOT_FOUND',
     INVALID_JWT_TOKEN = 'INVALID_JWT_TOKEN',
     EXPIRED_JWT_TOKEN = 'EXPIRED_JWT_TOKEN',
+    RESOURCE_EXISTS = 'RESOURCE_EXISTS',
+    INVALID_OLD_PASSWORD = 'INVALID_OLD_PASSWORD',
 }
 
 export const ERRORS = {
@@ -67,5 +69,15 @@ export const ERRORS = {
         status: 401,
         title: 'Token is expired',
         code: 'EXPIRED_JWT_TOKEN',
+    },
+    RESOURCE_EXISTS: {
+        status: 409,
+        title: 'Resource already exists',
+        code: 'RESOURCE_EXISTS',
+    },
+    INVALID_OLD_PASSWORD: {
+        status: 400,
+        title: 'Old password does not match',
+        code: 'INVALID_OLD_PASSWORD',
     },
 };

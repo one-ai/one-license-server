@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logger from '@core/Logger';
+import { Logger } from '@core';
 
 const MONGO_PROTOCOL = process.env.MONGO_PROTOCOL || 'mongodb';
 const MONGO_HOST = process.env.MONGO_HOST || '';
@@ -11,7 +11,7 @@ const MONGO_DB = process.env.MONGO_DB || '';
 const dbURI = `${MONGO_PROTOCOL}://${
     MONGO_USERNAME && MONGO_PASSWORD ? MONGO_USERNAME + ':' + MONGO_PASSWORD + '@' : ''
 }${MONGO_HOST}/${MONGO_DB}?retryWrites=true&w=majority`;
-logger.debug(dbURI);
+Logger.debug(dbURI);
 
 const options = {
     useNewUrlParser: true,
@@ -30,33 +30,36 @@ const options = {
 mongoose
     .connect(dbURI, options)
     .then(() => {
-        logger.info('Mongoose connection done');
+        Logger.info('Mongoose connection done');
     })
     .catch((e) => {
-        logger.info('Mongoose connection error');
-        logger.error(e);
+        Logger.info('Mongoose connection error');
+        Logger.error(e);
     });
 
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', () => {
-    logger.info('Mongoose default connection open to ' + dbURI);
+    Logger.info('Mongoose default connection open to ' + dbURI);
 });
 
 // If the connection throws an error
 mongoose.connection.on('error', (err) => {
-    logger.error('Mongoose default connection error: ' + err);
+    Logger.error('Mongoose default connection error: ' + err);
 });
 
 // When the connection is disconnected
 mongoose.connection.on('disconnected', () => {
-    logger.info('Mongoose default connection disconnected');
+    Logger.info('Mongoose default connection disconnected');
 });
 
 // If the Node process ends, close the Mongoose connection
 process.on('SIGINT', () => {
     mongoose.connection.close(() => {
-        logger.info('Mongoose default connection disconnected through app termination');
+        Logger.info('Mongoose default connection disconnected through app termination');
         process.exit(0);
     });
 });
+
+export * from './RoleModel';
+export * from './UserModel';

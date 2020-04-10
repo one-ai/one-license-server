@@ -1,13 +1,8 @@
 import { Router } from 'express';
-import UserRouter from './Users';
-import HealthRouter from './Health';
+import { V1Router } from './v1';
 
-// Init router and path
-const router = Router();
+const APIRouter = Router();
 
-// Add sub-routes
-router.use('/users', UserRouter);
-router.use('/health', HealthRouter);
+APIRouter.use('/v1', V1Router);
 
-// Export the base-router
-export default router;
+export { APIRouter };

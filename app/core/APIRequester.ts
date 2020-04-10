@@ -1,5 +1,5 @@
 import fetch, { Response } from 'node-fetch';
-import logger from './Logger';
+import { Logger } from './Logger';
 
 export const enum APIMethods {
     POST = 'POST',
@@ -104,13 +104,13 @@ export class APIRequester {
      * @param err - Request error
      */
     handleError<T>(err: Error): Promise<T> {
-        logger.error('URL: ' + this.url);
-        logger.error('Method: ' + this.method);
-        logger.error('Headers: ' + JSON.stringify(this.headers));
-        //logger.error('Body: ' + this.body);
-        logger.error('Status code: ' + this.STATUS_CODE);
-        logger.error('Plain text response: ' + this.responsePlainText);
-        logger.error('Request to remote service could not be made: ' + err.message);
+        Logger.error('URL: ' + this.url);
+        Logger.error('Method: ' + this.method);
+        Logger.error('Headers: ' + JSON.stringify(this.headers));
+        //Logger.error('Body: ' + this.body);
+        Logger.error('Status code: ' + this.STATUS_CODE);
+        Logger.error('Plain text response: ' + this.responsePlainText);
+        Logger.error('Request to remote service could not be made: ' + err.message);
         throw err;
     }
 }

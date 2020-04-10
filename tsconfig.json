@@ -13,10 +13,14 @@
         "target": "es6",
         "moduleResolution": "node",
         "paths": {
-            "@entities/*": ["app/entities/*"],
-            "@core/*": ["app/core/*"],
+            "@core": ["app/core"],
             "@server": ["app/Server"],
-            "@config/*": ["app/config/*"]
+            "@config": ["app/config"],
+            "@repositories": ["app/repositories"],
+            "@services": ["app/services"],
+            "@models": ["app/models"],
+            "@controllers": ["app/controllers"],
+            "@helpers": ["app/helpers"]
         },
         "types": ["node", "jest"],
         "typeRoots": ["node_modules/@types"]
