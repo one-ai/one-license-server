@@ -12,6 +12,7 @@ export const enum ERROR_CODES {
     EXPIRED_JWT_TOKEN = 'EXPIRED_JWT_TOKEN',
     RESOURCE_EXISTS = 'RESOURCE_EXISTS',
     INVALID_OLD_PASSWORD = 'INVALID_OLD_PASSWORD',
+    USER_NOT_REGISTERED = 'USER_NOT_REGISTERED',
 }
 
 export const ERRORS = {
@@ -31,12 +32,12 @@ export const ERRORS = {
         code: 'PERMISSION_DENIED',
     },
     INVALID_CREDENTIALS: {
-        status: 400,
+        status: 401,
         title: 'Invalid login credentials',
         code: 'INVALID_CREDENTIALS',
     },
     UNVERIFIED_EMAIL: {
-        status: 400,
+        status: 401,
         title: 'Email address is not verified',
         code: 'UNVERIFIED_EMAIL',
     },
@@ -79,5 +80,10 @@ export const ERRORS = {
         status: 400,
         title: 'Old password does not match',
         code: 'INVALID_OLD_PASSWORD',
+    },
+    USER_NOT_REGISTERED: {
+        status: 401,
+        title: 'User is not registered',
+        code: 'USER_NOT_REGISTERED',
     },
 };

@@ -59,6 +59,21 @@ export class UserRepo {
     }
 
     /**
+     * Find full user by user email
+     * @param email User email
+     */
+    public static findCompleteByEmail(email: string): Promise<User | null> {
+        return UserModel.findOne({ email: email })
+            .select('+password')
+            .populate({
+                path: 'roles',
+                select: { code: 1 },
+            })
+            .lean<User>()
+            .exec();
+    }
+
+    /**
      * Create new user
      * @param user User object
      * @param roleCode Role code

@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import { ERROR_CODES } from '@config';
-import { CustomError } from '@core';
+import { CustomError, Logger } from '@core';
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 
@@ -18,8 +18,8 @@ export function Validator(schema: Joi.ObjectSchema, source: ValidationSource = V
         if (!error) return next();
 
         const { details } = error;
-        //const message = details.map((i) => i.message.replace(/['"]+/g, '')).join(',');
-
+        const message = details.map((i) => i.message.replace(/['"]+/g, '')).join(',');
+        Logger.info(message);
         throw new CustomError(ERROR_CODES.INSUFFICIENT_PARAMETERS);
     };
 }

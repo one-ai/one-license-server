@@ -7,4 +7,5 @@ export const REQUIRED_ENV: string[] = [
     'MONGO_USERNAME',
     'MONGO_PASSWORD',
     'MONGO_DB',
+    'JWT_SECRET',
 ];

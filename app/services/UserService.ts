@@ -3,10 +3,13 @@ import { UserRepo } from '@repositories';
 import { RoleCode } from '@models';
 import { ERROR_CODES } from '@config';
 import { CustomError } from '@core';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // Define default role assigned to new users
-const DEFAULT_ROLE = RoleCode.ADMIN;
+const DEFAULT_ROLE: RoleCode = RoleCode.ADMIN;
+const JWT_SECRET: string = process.env.JWT_SECRET ? process.env.JWT_SECRET : Math.round(Math.random() * 10).toString();
+const JWT_EXPIRY = '1h';
 
 export class UserService {
     /**
@@ -79,5 +82,25 @@ export class UserService {
         const updatedUser = await UserRepo.update(user);
         if (!updatedUser) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         return updatedUser;
+    }
+
+    /**
+     * Authenticate user and generate token
+     * @param credentials Login credentials
+     */
+    public static async authenticate(credentials: Pick<User, 'email' | 'password'>): Promise<string> {
+        const user = await UserRepo.findCompleteByEmail(credentials.email);
+        if (!user) throw new CustomError(ERROR_CODES.USER_NOT_REGISTERED);
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+        if (passwordMatch === false) throw new CustomError(ERROR_CODES.INVALID_CREDENTIALS);
+        const token: string = jwt.sign(
+            {
+                id: user._id,
+                roles: user.roles,
+            },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRY },
+        );
+        return token;
     }
 }
