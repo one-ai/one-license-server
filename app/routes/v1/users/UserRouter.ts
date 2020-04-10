@@ -12,6 +12,11 @@ UserRouter.get('/', UserController.findAll);
 UserRouter.get('/:userId', Validator(UserValidationSchema.userId, ValidationSource.PARAM), UserController.findOne);
 
 // Update user
-UserRouter.put('/:userId', Validator(UserValidationSchema.userId, ValidationSource.PARAM), UserController.update);
+UserRouter.put(
+    '/:userId',
+    Validator(UserValidationSchema.userId, ValidationSource.PARAM),
+    Validator(UserValidationSchema.userUpdate),
+    UserController.update,
+);
 
 export { UserRouter };
