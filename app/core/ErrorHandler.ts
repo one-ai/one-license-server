@@ -19,6 +19,7 @@ export class ErrorHandler extends Error {
                 errors: [
                     {
                         ...customError,
+                        description: err.description ? err.description : undefined,
                     },
                 ],
                 service: serviceName,
