@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserController } from '@controllers';
 import { Validator, ValidationSource } from '@helpers';
-import { UserValidationSchema } from './ValidationSchema';
+import { UserValidationSchema } from './UserValidationSchema';
 
 const UserRouter = Router();
 

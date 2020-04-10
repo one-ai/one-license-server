@@ -1,1 +1,1 @@
-export * from './RegisterRouter';
+export * from './AccessRouter';

@@ -9,4 +9,9 @@ export const AccessController = {
         const user: User = await UserService.create(body);
         new SuccessHandler(user, res);
     },
+    login: async function (req: Request, res: Response): Promise<void> {
+        const credentials = { email: req.body.email, password: req.body.password };
+        const token = await UserService.authenticate(credentials);
+        new SuccessHandler({ token }, res);
+    },
 };
