@@ -19,8 +19,8 @@ export function Validator(schema: Joi.ObjectSchema, source: ValidationSource = V
 
         const { details } = error;
         const message = details.map((i) => i.message.replace(/['"]+/g, '')).join(',');
-        Logger.info(message);
-        throw new CustomError(ERROR_CODES.INSUFFICIENT_PARAMETERS);
+
+        throw new CustomError(ERROR_CODES.INSUFFICIENT_PARAMETERS, message);
     };
 }
 

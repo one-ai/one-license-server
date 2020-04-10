@@ -5,6 +5,7 @@ export const enum ERROR_CODES {
     INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
     UNVERIFIED_EMAIL = 'UNVERIFIED_EMAIL',
     INSUFFICIENT_PARAMETERS = 'INSUFFICIENT_PARAMETERS',
+    INVALID_PARAMETERS = 'INVALID_PARAMETERS',
     INVALID_EMAIL_ADDRESS = 'INVALID_EMAIL_ADDRESS',
     RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND',
     TOKEN_NOT_FOUND = 'TOKEN_NOT_FOUND',
@@ -40,6 +41,11 @@ export const ERRORS = {
         status: 401,
         title: 'Email address is not verified',
         code: 'UNVERIFIED_EMAIL',
+    },
+    INVALID_PARAMETERS: {
+        status: 400,
+        title: 'Invalid parameters',
+        code: 'INVALID_PARAMETERS',
     },
     INSUFFICIENT_PARAMETERS: {
         status: 400,
