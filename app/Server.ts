@@ -6,12 +6,18 @@ import helmet from 'helmet';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 
-import BaseRouter from './routes';
+import { APIRouter } from './routes';
 
-import './models'; // Initialize database
-import CustomError from '@core/CustomError';
-import { ErrorHandler } from '@core/ErrorHandler';
-import { ERROR_CODES } from '@config/ErrorCodes';
+// Initialize database
+import '@models';
+
+import { MongoSeeder } from '@helpers';
+import { CustomError } from '@core';
+import { ErrorHandler } from '@core';
+import { ERROR_CODES } from '@config';
+
+// Seed roles
+MongoSeeder();
 
 // Init express
 const app = express();
@@ -31,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Add APIs
-app.use('/api', BaseRouter);
+app.use('/api', APIRouter);
 
 // Serve any static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -47,4 +53,4 @@ app.use((err: Error | CustomError, req: Request, res: Response, next: NextFuncti
 });
 
 // Export express instance
-export default app;
+export { app };

@@ -1,7 +1,7 @@
-import CustomError from '@core/CustomError';
+import { CustomError } from '@core';
 import { Response, Request } from 'express';
-import { ERROR_CODES, ERRORS } from '@config/ErrorCodes';
-import logger from '@core/Logger';
+import { ERROR_CODES, ERRORS } from '@config';
+import { Logger } from '@core';
 const serviceName = 'one-license-server';
 
 export class ErrorHandler extends Error {
@@ -39,7 +39,7 @@ export class ErrorHandler extends Error {
         } else {
             // When default Error is thrown
 
-            logger.error(err.message, err);
+            Logger.error(err.message, err);
 
             const customError = ERRORS[ERROR_CODES.INTERNAL_ERROR];
             res.status(customError.status).json({

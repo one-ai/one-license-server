@@ -10,7 +10,7 @@ import { createLogger, format, transports } from 'winston';
 const { File, Console } = transports;
 
 // Init Logger
-const logger = createLogger({
+const Logger = createLogger({
     level: 'info',
 });
 
@@ -31,6 +31,6 @@ const errorStackFormat = format((info) => {
 const consoleTransport = new Console({
     format: format.combine(format.colorize(), format.simple(), errorStackFormat()),
 });
-logger.add(consoleTransport);
+Logger.add(consoleTransport);
 
-export default logger;
+export { Logger };

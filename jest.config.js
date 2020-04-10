@@ -84,6 +84,11 @@ module.exports = {
         '^@entities(.*)$': '<rootDir>/app/entities$1',
         '^@server(.*)$': '<rootDir>/app/Server',
         '^@config(.*)$': '<rootDir>/app/config$1',
+        '^@services(.*)$': '<rootDir>/app/services$1',
+        '^@models(.*)$': '<rootDir>/app/models$1',
+        '^@repositories(.*)$': '<rootDir>/app/repositories$1',
+        '^@controllers(.*)$': '<rootDir>/app/controllers$1',
+        '^@helpers(.*)$': '<rootDir>/app/helpers$1',
     },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
