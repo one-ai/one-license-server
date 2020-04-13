@@ -89,6 +89,7 @@ module.exports = {
         '^@repositories(.*)$': '<rootDir>/app/repositories$1',
         '^@controllers(.*)$': '<rootDir>/app/controllers$1',
         '^@helpers(.*)$': '<rootDir>/app/helpers$1',
+        '^@types(.*)$': '<rootDir>/app/types$1',
     },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -1,11 +1,11 @@
 import { Logger } from '@core';
-import { RoleSeeder } from '@services';
+import { RoleService } from '@services';
 
 /**
  * Seed mongodb
  */
-export function MongoSeeder() {
-    RoleSeeder()
+export function MongoSeeder(): void {
+    RoleService.RoleSeeder()
         .catch((err) => {
             if (err.message.indexOf('E11000') === -1) throw err;
         })

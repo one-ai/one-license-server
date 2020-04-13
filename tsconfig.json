@@ -20,7 +20,8 @@
             "@services": ["app/services"],
             "@models": ["app/models"],
             "@controllers": ["app/controllers"],
-            "@helpers": ["app/helpers"]
+            "@helpers": ["app/helpers"],
+            "@types": ["app/types"]
         },
         "types": ["node", "jest"],
         "typeRoots": ["node_modules/@types"]
