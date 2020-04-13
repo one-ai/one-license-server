@@ -22,7 +22,8 @@
         "@models": "dist/models",
         "@repositories": "dist/repositories",
         "@controllers": "dist/controllers",
-        "@helpers": "dist/helpers"
+        "@helpers": "dist/helpers",
+        "@types": "dist/types"
     },
     "dependencies": {
         "@hapi/joi": "^17.1.1",

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { SuccessHandler } from '@core';
-import { UserService } from '@services';
+import { UserService, AuthService } from '@services';
 import { User } from '@models';
 
 export const AccessController = {
@@ -11,7 +11,7 @@ export const AccessController = {
     },
     login: async function (req: Request, res: Response): Promise<void> {
         const credentials = { email: req.body.email, password: req.body.password };
-        const token = await UserService.authenticate(credentials);
+        const token = await AuthService.generateAccessToken(credentials);
         new SuccessHandler({ token }, res);
     },
 };
