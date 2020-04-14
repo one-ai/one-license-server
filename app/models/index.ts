@@ -63,3 +63,5 @@ process.on('SIGINT', () => {
 
 export * from './RoleModel';
 export * from './UserModel';
+export * from './ProductModel';
+export * from './VersionModel';
