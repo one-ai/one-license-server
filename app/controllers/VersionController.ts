@@ -27,16 +27,16 @@ export const VersionController = {
     },
     update: async function (req: Request, res: Response): Promise<void> {
         const versionId = req.params.versionId;
-        const newProductConfig = req.body;
-        newProductConfig._id = versionId;
-        const version: Version | null = await VersionService.update(newProductConfig);
+        const newVersionConfig = req.body;
+        newVersionConfig._id = versionId;
+        const version = await VersionService.update(versionId, newVersionConfig);
         if (!version) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         new SuccessHandler(version, res);
     },
     remove: async function (req: Request, res: Response): Promise<void> {
         const versionId = req.params.versionId;
-        const version: Version | null = await VersionService.remove(versionId);
-        if (!version) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
-        new SuccessHandler(version, res);
+        const result = await VersionService.remove(versionId);
+        if (!result.deletedCount) throw new Error(ERROR_CODES.RESOURCE_NOT_FOUND);
+        new SuccessHandler(result, res);
     },
 };

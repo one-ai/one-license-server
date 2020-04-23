@@ -44,7 +44,7 @@ export class AuthService {
             if (err instanceof JsonWebTokenError) throw new CustomError(ERROR_CODES.INVALID_JWT_TOKEN);
         }
 
-        const user = await UserRepo.findById(decoded.userId);
+        const user = await UserRepo.findOne({ _id: decoded.userId } as User);
         if (!user) throw new CustomError(ERROR_CODES.INVALID_JWT_TOKEN);
 
         return user;
