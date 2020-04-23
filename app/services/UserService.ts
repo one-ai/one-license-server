@@ -13,7 +13,7 @@ export class UserService {
      * Find all users
      */
     public static async findAll(): Promise<User[]> {
-        const users = await UserRepo.findAll();
+        const users = await UserRepo.findAll({} as User);
         return users;
     }
 
@@ -21,9 +21,9 @@ export class UserService {
      * Find user by user id
      * @param userId User id
      */
-    public static async findOne(userId: string): Promise<User | null> {
-        const user = await UserRepo.findById(userId);
-        return user;
+    public static async findOne(user: Partial<User>): Promise<User | null> {
+        const fullUser = await UserRepo.findOne(user);
+        return fullUser;
     }
 
     /**
@@ -65,7 +65,7 @@ export class UserService {
         user: Omit<User, 'createdAt' | 'updatedAt'>,
         oldPassword?: string,
     ): Promise<User | User[]> {
-        const targetUser = await UserRepo.findCompleteById(user._id);
+        const targetUser = await UserRepo.findOne({ _id: user._id } as User);
         if (!targetUser) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         // When email update, set unverified
         if (user.email && targetUser.email !== user.email) user.verified = false;

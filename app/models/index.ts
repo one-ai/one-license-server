@@ -65,3 +65,4 @@ export * from './RoleModel';
 export * from './UserModel';
 export * from './ProductModel';
 export * from './VersionModel';
+export * from './LicenseModel';

@@ -3,10 +3,11 @@ import mongoose from 'mongoose';
 
 export class ProductRepo {
     /**
-     * Find all products
+     * Find all matching products
+     * @param product Product object
      */
-    public static findAll(): Promise<Product[]> {
-        return ProductModel.find()
+    public static findAll(product: Partial<Product>): Promise<Product[]> {
+        return ProductModel.find(product)
             .populate({
                 path: 'versions',
                 select: { name: 1 },
@@ -19,8 +20,8 @@ export class ProductRepo {
      * Find product by id
      * @param id Product id
      */
-    public static findById(id: string): Promise<Product | null> {
-        return ProductModel.findOne({ _id: mongoose.Types.ObjectId(id) })
+    public static findOne(product: Partial<Product>): Promise<Product | null> {
+        return ProductModel.findOne(product)
             .populate({
                 path: 'versions',
                 select: { name: 1 },
@@ -35,13 +36,9 @@ export class ProductRepo {
      */
     public static async create(product: Exclude<Product, 'createdAt' | 'updatedAt' | 'versions'>): Promise<Product> {
         const now = new Date();
-        const productConfig = {
-            ...product,
-            createdAt: now,
-            updatedAt: now,
-            owner: mongoose.Types.ObjectId(product.owner._id),
-        };
-        const newProduct = await (await ProductModel.create(productConfig)).populate({
+        product.createdAt = now;
+        product.updatedAt = now;
+        const newProduct = await (await ProductModel.create(product)).populate({
             path: 'versions',
             select: { name: 1 },
         });
@@ -54,18 +51,11 @@ export class ProductRepo {
      * @param product Product object
      */
     public static update(
-        product: Partial<Product> & Exclude<Product, 'versions' | 'createdAt' | 'updatedAt'>,
+        oldProduct: Partial<Product>,
+        newProduct: Partial<Product> & Exclude<Product, 'versions' | 'createdAt' | 'updatedAt'>,
     ): Promise<Product | null> {
-        const updatedProduct = {
-            ...product,
-            updatedAt: new Date(),
-        };
-
-        return ProductModel.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(product._id) },
-            { $set: { ...updatedProduct } },
-            { new: true },
-        )
+        newProduct.updatedAt = new Date();
+        return ProductModel.findOneAndUpdate(oldProduct, { $set: { ...newProduct } }, { new: true })
             .populate({
                 path: 'versions',
                 select: { name: 1 },
@@ -78,15 +68,8 @@ export class ProductRepo {
      * Delete product
      * @param product product object
      */
-    public static async remove(product: Product): Promise<Product | null> {
-        const deletedProduct = await ProductModel.findOneAndDelete({ _id: mongoose.Types.ObjectId(product._id) })
-            .populate({
-                path: 'version',
-                select: { name: 1 },
-            })
-            .lean<Product>()
-            .exec();
-
+    public static async remove(product: Partial<Product>): Promise<{ deletedCount?: number }> {
+        const deletedProduct = ProductModel.deleteMany(product).exec();
         return deletedProduct;
     }
 }

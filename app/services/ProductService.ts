@@ -1,14 +1,15 @@
-import { Product, User } from '@models';
+import { Product, User, Version } from '@models';
 import { ProductRepo } from '@repositories';
 import { ERROR_CODES } from '@config';
 import { CustomError } from '@core';
+import { VersionService } from './VersionService';
 
 export class ProductService {
     /**
      * Find all products
      */
     public static async findAll(): Promise<Product[]> {
-        const products = await ProductRepo.findAll();
+        const products = await ProductRepo.findAll({} as Product);
         return products;
     }
 
@@ -16,10 +17,11 @@ export class ProductService {
      * Find product by id
      * @param productId Product id
      */
-    public static async findOne(productId: string): Promise<Product> {
-        const product = await ProductRepo.findById(productId);
-        if (!product) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
-        return product;
+    public static async findOne(productIdOrProduct: string | Product): Promise<Product | null> {
+        const product =
+            typeof productIdOrProduct === 'string' ? ({ _id: productIdOrProduct } as Product) : productIdOrProduct;
+        const fullProduct = await ProductRepo.findOne(product);
+        return fullProduct;
     }
 
     /**
@@ -42,27 +44,25 @@ export class ProductService {
 
     /**
      * Update product
-     * @param Product Product info
+     * @param Product Product ID or object
      */
-    public static async update(productIdOrProduct: string | Product, newConfig?: JSON): Promise<Product> {
-        const product: Product =
-            typeof productIdOrProduct === 'string'
-                ? ({ ...newConfig, _id: productIdOrProduct } as Product)
-                : productIdOrProduct;
-        const updatedProduct = await ProductRepo.update(product);
-        if (!updatedProduct) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
+    public static async update(productIdOrProduct: string | Product, newProduct: Product): Promise<Product | null> {
+        const oldProduct =
+            typeof productIdOrProduct === 'string' ? ({ _id: productIdOrProduct } as Product) : productIdOrProduct;
+        const updatedProduct = await ProductRepo.update(oldProduct, newProduct);
         return updatedProduct;
     }
 
     /**
      * Remove product
-     * @param productId Product ID
+     * @param productId Product ID or object
      */
-    public static async remove(productIdOrProduct: string | Product): Promise<Product> {
+    public static async remove(productIdOrProduct: string | Product): Promise<{ deletedCount?: number }> {
         const product: Product =
             typeof productIdOrProduct === 'string' ? ({ _id: productIdOrProduct } as Product) : productIdOrProduct;
-        const removedProduct = await ProductRepo.remove(product);
-        if (!removedProduct) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
-        return removedProduct;
+        // Delete all versions
+        await VersionService.remove({ product: product._id } as Version);
+        const result = await ProductRepo.remove(product);
+        return result;
     }
 }

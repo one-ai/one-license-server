@@ -1,12 +1,12 @@
 import { User, UserModel, Role, RoleModel, RoleCode } from '@models';
-import mongoose from 'mongoose';
 
 export class UserRepo {
     /**
-     * Find all users
+     * Find single user
+     * @param user User object
      */
-    public static findAll(): Promise<User[]> {
-        return UserModel.find()
+    public static findOne(user: Partial<User>): Promise<User | null> {
+        return UserModel.findOne(user)
             .populate({
                 path: 'roles',
                 select: { code: 1 },
@@ -16,26 +16,12 @@ export class UserRepo {
     }
 
     /**
-     * Find user by user id
-     * @param id User id
+     * Find all matching users
+     * @param user User object
      */
-    public static findById(id: string): Promise<User | null> {
-        return UserModel.findOne({ _id: mongoose.Types.ObjectId(id) })
-            .populate({
-                path: 'roles',
-                select: { code: 1 },
-            })
-            .lean<User>()
-            .exec();
-    }
-
-    /**
-     * Find full user info
-     * @param id User id
-     */
-    public static findCompleteById(id: string): Promise<User | null> {
-        return UserModel.findOne({ _id: mongoose.Types.ObjectId(id) })
-            .select('+password')
+    public static findAll(user: Partial<User>, full = false): Promise<User[]> {
+        return UserModel.find(user)
+            .select(full ? '+password' : '')
             .populate({
                 path: 'roles',
                 select: { code: 1 },

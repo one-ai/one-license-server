@@ -1,12 +1,12 @@
 import { Version, VersionModel } from '@models';
-import mongoose from 'mongoose';
 
 export class VersionRepo {
     /**
-     * Find all versions
+     * Find all matching versions
+     * @param version Version object
      */
-    public static findAll(): Promise<Version[]> {
-        return VersionModel.find()
+    public static findAll(version: Partial<Version>): Promise<Version[]> {
+        return VersionModel.find(version)
             .populate({
                 path: 'product',
                 select: { name: 1 },
@@ -16,11 +16,11 @@ export class VersionRepo {
     }
 
     /**
-     * Find version by version id
-     * @param id Version id
+     * Find a version
+     * @param version Version object
      */
-    public static findById(id: string): Promise<Version | null> {
-        return VersionModel.findOne({ _id: mongoose.Types.ObjectId(id) })
+    public static findOne(version: Version): Promise<Version | null> {
+        return VersionModel.findOne(version)
             .populate({
                 path: 'product',
                 select: { name: 1 },
@@ -30,18 +30,14 @@ export class VersionRepo {
     }
 
     /**
-     * Create new version
-     * @param version Version info
+     * Create a new version
+     * @param version Version object
      */
     public static async create(version: Exclude<Version, 'createdAt' | 'updatedAt'>): Promise<Version> {
         const now = new Date();
-        const versionConfig = {
-            ...version,
-            createdAt: now,
-            updatedAt: now,
-            product: mongoose.Types.ObjectId(version.product._id),
-        };
-        const newVersion = await (await VersionModel.create(versionConfig)).populate({
+        version.createdAt = now;
+        version.updatedAt = now;
+        const newVersion = await (await VersionModel.create(version)).populate({
             path: 'product',
             select: { name: 1 },
         });
@@ -52,12 +48,12 @@ export class VersionRepo {
      * Update version
      * @param version Version object
      */
-    public static update(version: Partial<Omit<Version, 'createdAt'>>): Promise<Version | null> {
-        const update = {
-            ...version,
-            updatedAt: new Date(),
-        };
-        return VersionModel.findOneAndUpdate({ _id: version._id }, { $set: { ...update } }, { new: true })
+    public static update(
+        oldVersion: Partial<Version>,
+        newVersion: Partial<Omit<Version, 'createdAt'>>,
+    ): Promise<Version | null> {
+        newVersion.updatedAt = new Date();
+        return VersionModel.findOneAndUpdate(oldVersion, { $set: { ...newVersion } }, { new: true })
             .populate({
                 path: 'product',
                 select: { name: 1 },
@@ -70,10 +66,7 @@ export class VersionRepo {
      * Delete version
      * @param version Version object
      */
-    public static async remove(version: Partial<Version>): Promise<Version | null> {
-        return VersionModel.findOneAndDelete({ _id: version._id })
-            .populate({ path: 'product', select: { name: 1 } })
-            .lean<Version>()
-            .exec();
+    public static async remove(version: Partial<Version>): Promise<{ deletedCount?: number }> {
+        return VersionModel.deleteMany(version).exec();
     }
 }

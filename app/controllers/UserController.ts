@@ -7,7 +7,7 @@ import { ERROR_CODES } from '@config';
 export const UserController = {
     findOne: async function (req: Request, res: Response): Promise<void> {
         const userId = req.params.userId;
-        const user: User | null = await UserService.findOne(userId);
+        const user: User | null = await UserService.findOne({ _id: userId } as User);
         if (!user) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         new SuccessHandler(user, res);
     },

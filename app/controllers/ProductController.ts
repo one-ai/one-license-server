@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { SuccessHandler } from '@core';
+import { SuccessHandler, CustomError } from '@core';
 import { ProductService } from '@services';
 import { Product } from '@models';
+import { ERROR_CODES } from '@config';
 
 export const ProductController = {
     create: async function (req: Request, res: Response): Promise<void> {
@@ -17,6 +18,7 @@ export const ProductController = {
     findOne: async function (req: Request, res: Response): Promise<void> {
         const productId = req.params.productId;
         const product: Product | null = await ProductService.findOne(productId);
+        if (!product) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         new SuccessHandler(product, res);
     },
     findAll: async function (req: Request, res: Response): Promise<void> {
@@ -25,14 +27,15 @@ export const ProductController = {
     },
     update: async function (req: Request, res: Response): Promise<void> {
         const productId = req.params.productId;
-        const newProductConfig = req.body;
-        newProductConfig._id = productId;
-        const product: Product = await ProductService.update(newProductConfig);
+        const newProduct = { ...req.body, _id: productId } as Product;
+        const product = await ProductService.update(productId, newProduct);
+        if (!product) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         new SuccessHandler(product, res);
     },
     remove: async function (req: Request, res: Response): Promise<void> {
         const productId = req.params.productId;
-        const product: Product = await ProductService.remove(productId);
-        new SuccessHandler(product, res);
+        const result = await ProductService.remove(productId);
+        if (!result.deletedCount) throw new Error(ERROR_CODES.RESOURCE_NOT_FOUND);
+        new SuccessHandler(result, res);
     },
 };
