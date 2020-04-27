@@ -32,8 +32,8 @@ export class VersionService {
     public static async create(version: Version, productIdOrProduct: string | Product): Promise<Version> {
         try {
             // Create new version
-            const product =
-                typeof productIdOrProduct === 'string' ? ({ _id: productIdOrProduct } as Product) : productIdOrProduct;
+            const product = await ProductService.findOne(productIdOrProduct);
+            if (!product) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
             version.product = product;
             const newVersion = await VersionRepo.create(version);
             if (!newVersion) throw new Error('New version could not be created');

@@ -14,6 +14,8 @@ export const enum ERROR_CODES {
     RESOURCE_EXISTS = 'RESOURCE_EXISTS',
     INVALID_OLD_PASSWORD = 'INVALID_OLD_PASSWORD',
     USER_NOT_REGISTERED = 'USER_NOT_REGISTERED',
+    LICENSE_EXPIRED = 'LICENSE_EXPIRED',
+    API_CALLS_EXHAUSTED = 'API_CALLS_EXHAUSTED',
 }
 
 export const ERRORS = {
@@ -91,5 +93,15 @@ export const ERRORS = {
         status: 401,
         title: 'User is not registered',
         code: 'USER_NOT_REGISTERED',
+    },
+    LICENSE_EXPIRED: {
+        status: 400,
+        title: 'License has expired',
+        code: 'LICENSE_EXPIRED',
+    },
+    API_CALLS_EXHAUSTED: {
+        status: 400,
+        title: 'Total API calls have been exhausted',
+        code: 'API_CALLS_EXHAUSTED',
     },
 };

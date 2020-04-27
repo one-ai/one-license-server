@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import { JoiObjectId } from '@helpers';
-import { syncStrategy, syncTrigger, licenseType } from '@models';
+import { SYNC_STRATEGY, SYNC_TRIGGER, LICENSE_TYPE } from '@models';
 
 export const LicenseValidationSchema = {
     allLicenses: Joi.object().keys({
@@ -22,22 +22,22 @@ export const LicenseValidationSchema = {
         productId: JoiObjectId().required(),
     }),
     licenseCreateOrUpdate: Joi.object().keys({
-        type: Joi.string().valid(licenseType.NO_OF_API_CALLS, licenseType.TIME_BOUND),
+        type: Joi.string().valid(LICENSE_TYPE.NO_OF_API_CALLS, LICENSE_TYPE.TIME_BOUND),
         description: Joi.string().required().min(1),
         metaData: Joi.object().optional(),
-        syncStrategy: Joi.string().valid(syncStrategy.HTTP, syncStrategy.SFTP),
-        syncTrigger: Joi.string().valid(syncTrigger.AFTER_INTERVAL, syncTrigger.AT_EVERY_CALL),
+        syncStrategy: Joi.string().valid(SYNC_STRATEGY.HTTP, SYNC_STRATEGY.SFTP),
+        syncTrigger: Joi.string().valid(SYNC_TRIGGER.AFTER_INTERVAL, SYNC_TRIGGER.AT_EVERY_CALL),
         // (dot) for self reference: https://github.com/hapijs/joi/issues/1569#issuecomment-437713596
-        syncInterval: Joi.number().when('.syncInterval', {
-            is: syncTrigger.AFTER_INTERVAL,
+        syncInterval: Joi.when('syncTrigger', {
+            is: SYNC_TRIGGER.AFTER_INTERVAL,
             then: Joi.number().required(),
         }),
-        allowedApiCalls: Joi.number().when('.allowedApiCalls', {
-            is: licenseType.NO_OF_API_CALLS,
+        allowedApiCalls: Joi.when('type', {
+            is: LICENSE_TYPE.NO_OF_API_CALLS,
             then: Joi.number().required(),
         }),
-        expiresAt: Joi.date().when('.expiresAt', {
-            is: licenseType.TIME_BOUND,
+        expiresAt: Joi.when('type', {
+            is: LICENSE_TYPE.TIME_BOUND,
             then: Joi.date().required(),
         }),
     }),
