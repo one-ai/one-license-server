@@ -4,33 +4,34 @@ import { Version } from '@models';
 const DOCUMENT_NAME = 'License';
 const COLLECTION_NAME = 'licenses';
 
-export const enum syncStrategy {
+export const enum SYNC_STRATEGY {
     HTTP = 'HTTP',
     SFTP = 'SFTP',
 }
 
-export const enum syncTrigger {
+export const enum SYNC_TRIGGER {
     AT_EVERY_CALL = 'AT_EVERY_CALL',
     AFTER_INTERVAL = 'AFTER_INTERVAL',
 }
 
-export const enum licenseType {
+export const enum LICENSE_TYPE {
     TIME_BOUND = 'TIME_BOUND',
     NO_OF_API_CALLS = 'NO_OF_API_CALLS',
+    TIME_BOUND_AND_API_CALLS = 'TIME_BOUND_AND_API_CALLS',
 }
 
 export interface License extends Document {
-    type: licenseType;
+    type: LICENSE_TYPE;
     description?: string;
     version: Version;
     metaData?: Schema.Types.Mixed;
     active: boolean;
     expiresAt: Date;
-    syncStrategy: syncStrategy;
-    syncTrigger: syncTrigger;
+    syncStrategy: SYNC_STRATEGY;
+    syncTrigger: SYNC_TRIGGER;
     syncInterval?: number;
     allowedApiCalls?: number;
-    apiCallCount?: number;
+    apiCallCounter?: number;
     lastSync?: Date;
     createdAt?: Date;
     updatedAt?: Date;
@@ -41,7 +42,7 @@ const schema = new Schema(
         type: {
             type: Schema.Types.String,
             required: true,
-            enum: [licenseType.TIME_BOUND, licenseType.NO_OF_API_CALLS],
+            enum: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.NO_OF_API_CALLS],
         },
         description: {
             type: Schema.Types.String,
@@ -69,12 +70,12 @@ const schema = new Schema(
         syncStrategy: {
             type: Schema.Types.String,
             required: true,
-            enum: [syncStrategy.HTTP, syncStrategy.SFTP],
+            enum: [SYNC_STRATEGY.HTTP, SYNC_STRATEGY.SFTP],
         },
         syncTrigger: {
             type: Schema.Types.String,
             required: true,
-            enum: [syncTrigger.AFTER_INTERVAL, syncTrigger.AT_EVERY_CALL],
+            enum: [SYNC_TRIGGER.AFTER_INTERVAL, SYNC_TRIGGER.AT_EVERY_CALL],
         },
         syncInterval: {
             type: Schema.Types.Number,

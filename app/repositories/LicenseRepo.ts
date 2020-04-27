@@ -1,5 +1,4 @@
 import { License, LicenseModel } from '@models';
-import mongoose, { Schema } from 'mongoose';
 
 export class LicenseRepo {
     /**
