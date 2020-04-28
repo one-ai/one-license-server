@@ -24,9 +24,9 @@ LicenseRouter.post(
 
 // Sync license
 LicenseRouter.put(
-    '/:licenseId/sync',
+    '/:licenseId/consume',
     Validator(LicenseValidationSchema.singleLicense, ValidationSource.PARAM),
-    LicenseController.sync,
+    LicenseController.consume,
 );
 
 // Find a single license
