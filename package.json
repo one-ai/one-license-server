@@ -2,11 +2,11 @@
     "name": "express-gen-ts",
     "version": "0.0.0",
     "scripts": {
-        "build": "rm -rf dist && rm -rf frontend/dist && rm -rf app/public && cd frontend && yarn build && cd .. && mv frontend/build app/public && ts-node ./util/build.ts",
+        "build": "rm -rf dist && rm -rf frontend/public && rm -rf app/public && cd frontend && npm run build && cd .. && mv frontend/public app/public && ts-node ./util/build.ts",
         "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
         "start": "node -r module-alias/register ./dist",
         "start:app-dev": "nodemon --config nodemon.json",
-        "start:front-dev": "cd frontend && yarn start",
+        "start:front-dev": "cd frontend && npm run develop",
         "test": "npm run lint && jest",
         "install": "cd frontend && npm i && cd .."
     },

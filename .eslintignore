@@ -1,6 +1,8 @@
 node_modules
 dist
 logs
-frontend/public
 .git
 app/public
+frontend/node_modules
+.cache
+frontend/.cache
