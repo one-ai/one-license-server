@@ -16,12 +16,8 @@ export class ErrorHandler extends Error {
 
             // When custom error is thrown
             res.status(customError.status).json({
-                errors: [
-                    {
-                        ...customError,
-                        description: err.description ? err.description : undefined,
-                    },
-                ],
+                ...customError,
+                description: err.description ? err.description : undefined,
                 service: serviceName,
                 debug: DEBUG,
                 request: DEBUG
@@ -44,11 +40,7 @@ export class ErrorHandler extends Error {
 
             const customError = ERRORS[ERROR_CODES.INTERNAL_ERROR];
             res.status(customError.status).json({
-                errors: [
-                    {
-                        ...customError,
-                    },
-                ],
+                ...customError,
                 code: ERROR_CODES.INTERNAL_ERROR,
                 service: serviceName,
                 debug: DEBUG,
