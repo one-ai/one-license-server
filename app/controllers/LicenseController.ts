@@ -35,9 +35,9 @@ export const LicenseController = {
         if (!license) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
         new SuccessHandler(license, res);
     },
-    sync: async function (req: Request, res: Response): Promise<void> {
+    consume: async function (req: Request, res: Response): Promise<void> {
         const licenseId = req.params.licenseId;
-        await LicenseService.sync(licenseId);
+        await LicenseService.consume(licenseId);
         new SuccessHandler('valid', res);
     },
 };

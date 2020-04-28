@@ -73,7 +73,11 @@ export class LicenseService {
         return res;
     }
 
-    public static async sync(licenseIdOrLicense: string | License): Promise<void> {
+    /**
+     * Check license validity and increment api call counter
+     * @param licenseIdOrLicense License Id or object
+     */
+    public static async consume(licenseIdOrLicense: string | License): Promise<void> {
         const license = typeof licenseIdOrLicense === 'string' ? { _id: licenseIdOrLicense } : licenseIdOrLicense;
         const fullLicense = await LicenseRepo.findOne(license);
         if (!fullLicense) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
