@@ -13,6 +13,7 @@ module.exports = {
         prefixWithI: 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-namespace': 'off',
+        'react/prop-types': 0,
     },
     parserOptions: {
         ecmaFeatures: {
