@@ -1,14 +1,20 @@
 {
-    "name": "express-gen-ts",
-    "version": "0.0.0",
+    "name": "one-license-server",
+    "version": "1.0.0",
+    "author": {
+        "name": "Rishav Anand",
+        "email": "hello@rishavanand.com",
+        "url": "https://rishavanand.com"
+    },
+    "repository": {
+        "url": "https://github.com/one-ai/one-license-server.git"
+    },
     "scripts": {
-        "build": "rm -rf dist && rm -rf frontend/public && rm -rf app/public && cd frontend && npm run build && cd .. && mv frontend/public app/public && ts-node ./util/build.ts",
+        "build": "ts-node ./util/build.ts",
         "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
         "start": "node -r module-alias/register ./dist",
-        "start:app-dev": "nodemon --config nodemon.json",
-        "start:front-dev": "cd frontend && npm run develop",
-        "test": "npm run lint && jest",
-        "install": "cd frontend && npm i && cd .."
+        "start:dev": "nodemon --config nodemon.json",
+        "test": "npm run lint && jest"
     },
     "husky": {
         "pre-commit": "npm run lint"
@@ -26,6 +32,40 @@
         "@types": "dist/types"
     },
     "dependencies": {
+        "bcrypt": "^4.0.1",
+        "command-line-args": "^5.1.1",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-async-errors": "^3.1.1",
+        "find": "^0.3.0",
+        "helmet": "^3.22.0",
+        "http-status-codes": "^1.4.0",
+        "jsonfile": "^6.0.1",
+        "jsonwebtoken": "^8.5.1",
+        "module-alias": "^2.2.2",
+        "mongoose": "^5.9.7",
+        "morgan": "^1.10.0",
+        "node-fetch": "^2.6.0",
+        "nodemon": "^2.0.2",
+        "supertest": "^4.0.2",
+        "winston": "^3.2.1"
+    },
+    "engines": {
+        "node": "^12.16.1",
+        "npm": "^6.13.4"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.6",
+        "@types/fs-extra": "^8.1.0",
+        "@types/jest": "^25.1.5",
+        "@types/mocha": "^7.0.2",
+        "@types/mongoose": "^5.7.8",
+        "@types/node-fetch": "^2.5.5",
+        "@types/supertest": "^2.0.8",
+        "@typescript-eslint/eslint-plugin": "^2.26.0",
+        "@typescript-eslint/parser": "^2.26.0",
         "@hapi/joi": "^17.1.1",
         "@types/bcrypt": "^3.0.0",
         "@types/command-line-args": "^5.0.0",
@@ -39,45 +79,6 @@
         "@types/jsonwebtoken": "^8.3.9",
         "@types/morgan": "^1.9.0",
         "@types/node": "^13.9.5",
-        "bcrypt": "^4.0.1",
-        "command-line-args": "^5.1.1",
-        "cookie-parser": "^1.4.5",
-        "dotenv": "^8.2.0",
-        "express": "^4.17.1",
-        "express-async-errors": "^3.1.1",
-        "find": "^0.3.0",
-        "helmet": "^3.22.0",
-        "http-status-codes": "^1.4.0",
-        "jasmine": "^3.5.0",
-        "jsonfile": "^6.0.1",
-        "jsonwebtoken": "^8.5.1",
-        "module-alias": "^2.2.2",
-        "mongoose": "^5.9.7",
-        "morgan": "^1.10.0",
-        "node-fetch": "^2.6.0",
-        "nodemon": "^2.0.2",
-        "react-scripts": "^3.4.1",
-        "supertest": "^4.0.2",
-        "ts-node": "^8.8.1",
-        "tsconfig-paths": "^3.9.0",
-        "tslib": "^1.11.1",
-        "tslint": "^6.1.0",
-        "winston": "^3.2.1"
-    },
-    "engines": {
-        "yarn": "^1.22.4",
-        "node": "^12.16.1",
-        "npm": "6.13.4"
-    },
-    "devDependencies": {
-        "@types/fs-extra": "^8.1.0",
-        "@types/jest": "^25.1.5",
-        "@types/mocha": "^7.0.2",
-        "@types/mongoose": "^5.7.8",
-        "@types/node-fetch": "^2.5.5",
-        "@types/supertest": "^2.0.8",
-        "@typescript-eslint/eslint-plugin": "^2.26.0",
-        "@typescript-eslint/parser": "^2.26.0",
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.10.1",
         "eslint-plugin-prettier": "^3.1.2",
@@ -87,6 +88,11 @@
         "jest": "^24.9.0",
         "prettier": "^2.0.2",
         "ts-jest": "^25.3.1",
-        "typescript": "^3.8.3"
+        "typescript": "^3.8.3",
+        "jasmine": "^3.5.0",
+        "tslint": "^6.1.0",
+        "tslib": "^1.11.1",
+        "ts-node": "^8.8.1",
+        "tsconfig-paths": "^3.9.0"
     }
 }

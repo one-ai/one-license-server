@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import path from 'path';
 import helmet from 'helmet';
+import cors from 'cors';
 
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
@@ -22,14 +22,12 @@ MongoSeeder();
 // Init express
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 // Show routes called in console during development
-if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-}
+app.use(morgan('dev'));
 
 // Security
 if (process.env.NODE_ENV === 'production') {
@@ -38,9 +36,6 @@ if (process.env.NODE_ENV === 'production') {
 
 // Add APIs
 app.use('/api', APIRouter);
-
-// Serve any static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Invalid endpoint
 app.use(() => {
