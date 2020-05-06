@@ -1,7 +1,7 @@
 import { Product, User, Version } from '@models';
 import { ProductRepo } from '@repositories';
 import { ERROR_CODES } from '@config';
-import { CustomError } from '@core';
+import { CustomError, Logger } from '@core';
 import { VersionService } from './VersionService';
 
 export class ProductService {
@@ -61,7 +61,13 @@ export class ProductService {
         const product: Product =
             typeof productIdOrProduct === 'string' ? ({ _id: productIdOrProduct } as Product) : productIdOrProduct;
         // Delete all versions
-        await VersionService.remove({ product: product._id } as Version);
+        try {
+            await VersionService.remove({ product: product._id } as Version);
+        } catch (err) {
+            if (err.errorCode && err.errorCode === ERROR_CODES.RESOURCE_NOT_FOUND)
+                Logger.info('No versions found for deletion');
+            else throw err;
+        }
         const result = await ProductRepo.remove(product);
         return result;
     }

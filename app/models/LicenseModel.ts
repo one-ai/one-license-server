@@ -21,6 +21,7 @@ export const enum LICENSE_TYPE {
 }
 
 export interface License extends Document {
+    name: string;
     type: LICENSE_TYPE;
     description?: string;
     version: Version;
@@ -39,10 +40,15 @@ export interface License extends Document {
 
 const schema = new Schema(
     {
+        name: {
+            type: Schema.Types.String,
+            trim: true,
+            required: true,
+        },
         type: {
             type: Schema.Types.String,
             required: true,
-            enum: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.NO_OF_API_CALLS],
+            enum: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.NO_OF_API_CALLS, LICENSE_TYPE.TIME_BOUND_AND_API_CALLS],
         },
         description: {
             type: Schema.Types.String,

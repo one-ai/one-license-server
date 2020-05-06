@@ -5,7 +5,7 @@ export class VersionRepo {
      * Find all matching versions
      * @param version Version object
      */
-    public static findAll(version: Partial<Version>): Promise<Version[]> {
+    public static find(version: Version): Promise<Version[]> {
         return VersionModel.find(version)
             .populate({
                 path: 'product',

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { SuccessHandler, CustomError } from '@core';
 import { LicenseService } from '@services';
-import { License } from '@models';
+import { License, Version } from '@models';
 import { ERROR_CODES } from '@config';
 
 export const LicenseController = {
@@ -18,7 +18,8 @@ export const LicenseController = {
         new SuccessHandler(license, res);
     },
     findAll: async function (req: Request, res: Response): Promise<void> {
-        const licenses: License[] = await LicenseService.findAll({} as License);
+        const license = { version: { _id: req.params.versionId } as Version } as License;
+        const licenses: License[] = await LicenseService.findAll(license);
         new SuccessHandler(licenses, res);
     },
     update: async function (req: Request, res: Response): Promise<void> {
