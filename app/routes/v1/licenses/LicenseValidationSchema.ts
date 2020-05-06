@@ -22,12 +22,16 @@ export const LicenseValidationSchema = {
         productId: JoiObjectId().required(),
     }),
     licenseCreateOrUpdate: Joi.object().keys({
-        type: Joi.string().valid(LICENSE_TYPE.NO_OF_API_CALLS, LICENSE_TYPE.TIME_BOUND),
+        name: Joi.string().required().min(1),
+        type: Joi.string().valid(
+            LICENSE_TYPE.NO_OF_API_CALLS,
+            LICENSE_TYPE.TIME_BOUND,
+            LICENSE_TYPE.TIME_BOUND_AND_API_CALLS,
+        ),
         description: Joi.string().required().min(1),
         metaData: Joi.object().optional(),
         syncStrategy: Joi.string().valid(SYNC_STRATEGY.HTTP, SYNC_STRATEGY.SFTP),
         syncTrigger: Joi.string().valid(SYNC_TRIGGER.AFTER_INTERVAL, SYNC_TRIGGER.AT_EVERY_CALL),
-        // (dot) for self reference: https://github.com/hapijs/joi/issues/1569#issuecomment-437713596
         syncInterval: Joi.when('syncTrigger', {
             is: SYNC_TRIGGER.AFTER_INTERVAL,
             then: Joi.number().required(),
@@ -37,7 +41,7 @@ export const LicenseValidationSchema = {
             then: Joi.number().required(),
         }),
         expiresAt: Joi.when('type', {
-            is: LICENSE_TYPE.TIME_BOUND,
+            is: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.TIME_BOUND_AND_API_CALLS],
             then: Joi.date().required(),
         }),
     }),

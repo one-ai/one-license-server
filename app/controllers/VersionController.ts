@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { SuccessHandler, CustomError } from '@core';
 import { VersionService } from '@services';
-import { Version } from '@models';
+import { Version, Product } from '@models';
 import { ERROR_CODES } from '@config';
 
 export const VersionController = {
@@ -22,7 +22,8 @@ export const VersionController = {
         new SuccessHandler(version, res);
     },
     findAll: async function (req: Request, res: Response): Promise<void> {
-        const versions: Version[] = await VersionService.findAll();
+        const version = { product: { _id: req.params.productId } as Product } as Version;
+        const versions: Version[] = await VersionService.find(version);
         new SuccessHandler(versions, res);
     },
     update: async function (req: Request, res: Response): Promise<void> {

@@ -1,7 +1,7 @@
 import { Version, Product, License } from '@models';
 import { VersionRepo, ProductRepo } from '@repositories';
 import { ERROR_CODES } from '@config';
-import { CustomError } from '@core';
+import { CustomError, Logger } from '@core';
 import { LicenseService } from './LicenseService';
 import { ProductService } from './ProductService';
 
@@ -9,8 +9,8 @@ export class VersionService {
     /**
      * Find all versions
      */
-    public static async findAll(): Promise<Version[]> {
-        const versions = await VersionRepo.findAll({} as Version);
+    public static async find(version: Version): Promise<Version[]> {
+        const versions = await VersionRepo.find(version);
         return versions;
     }
 
@@ -81,11 +81,17 @@ export class VersionService {
         const product = await ProductService.findOne(versionRecord.product._id);
         if (!product) return removeResult;
         // Pop deleted version from version list
-        product.versions = product.versions.filter((version) => version !== versionRecord._id);
+        product.versions = product.versions.filter(version => version !== versionRecord._id);
         // Update product
         await ProductService.update('' + product._id, product); // FIX: need of converting to string
-        // Remove licenses
-        await LicenseService.remove({ version: versionRecord._id } as License);
+        try {
+            // Remove licenses
+            await LicenseService.remove({ version: versionRecord._id } as License);
+        } catch (err) {
+            if (err.errorCode && err.errorCode === ERROR_CODES.RESOURCE_NOT_FOUND)
+                Logger.info('No licenses found for deletion');
+            else throw err;
+        }
         return removeResult;
     }
 }

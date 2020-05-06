@@ -40,6 +40,7 @@ export class LicenseService {
             const version = await VersionService.findOne(versionIdOrVersion);
             if (!version) throw new CustomError(ERROR_CODES.RESOURCE_NOT_FOUND);
             license.version = version;
+            if (license.expiresAt) license.expiresAt = new Date(license.expiresAt);
             // Create license
             const newLicense = await LicenseRepo.create(license);
             if (!newLicense) throw new Error('New license could not be created');
