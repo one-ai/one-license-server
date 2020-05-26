@@ -26,6 +26,7 @@ LicenseRouter.post(
 LicenseRouter.put(
     '/:licenseId/consume',
     Validator(LicenseValidationSchema.singleLicense, ValidationSource.PARAM),
+    Validator(LicenseValidationSchema.consume, ValidationSource.BODY),
     LicenseController.consume,
 );
 

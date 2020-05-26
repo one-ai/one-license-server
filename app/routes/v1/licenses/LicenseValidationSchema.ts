@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import { JoiObjectId } from '@helpers';
-import { SYNC_STRATEGY, SYNC_TRIGGER, LICENSE_TYPE } from '@models';
+import { SYNC_STRATEGY, SYNC_TRIGGER, LICENSE_TYPE, CLIENT_TYPE } from '@models';
 
 export const LicenseValidationSchema = {
     allLicenses: Joi.object().keys({
@@ -21,6 +21,21 @@ export const LicenseValidationSchema = {
     productId: Joi.object().keys({
         productId: JoiObjectId().required(),
     }),
+    consume: Joi.object().keys({
+        clientType: Joi.string().required().valid(CLIENT_TYPE.INDEPENDENT_CLIENT, CLIENT_TYPE.THIN_CLIENT),
+        clientConnectionId: Joi.when('clientType', {
+            is: CLIENT_TYPE.THIN_CLIENT,
+            then: Joi.number().required(),
+        }),
+        clientIdentifier: Joi.when('clientType', {
+            is: CLIENT_TYPE.THIN_CLIENT,
+            then: Joi.number().required(),
+        }),
+        apiCallCounter: Joi.when('clientType', {
+            is: CLIENT_TYPE.THIN_CLIENT,
+            then: Joi.number().required(),
+        }),
+    }),
     licenseCreateOrUpdate: Joi.object().keys({
         name: Joi.string().required().min(1),
         type: Joi.string().valid(
@@ -28,6 +43,8 @@ export const LicenseValidationSchema = {
             LICENSE_TYPE.TIME_BOUND,
             LICENSE_TYPE.TIME_BOUND_AND_API_CALLS,
         ),
+        clientType: Joi.string().valid(CLIENT_TYPE.INDEPENDENT_CLIENT, CLIENT_TYPE.THIN_CLIENT),
+        activationDelay: Joi.number().required().min(0),
         description: Joi.string().required().min(1),
         metaData: Joi.object().optional(),
         syncStrategy: Joi.string().valid(SYNC_STRATEGY.HTTP, SYNC_STRATEGY.SFTP),
