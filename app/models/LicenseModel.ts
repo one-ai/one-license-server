@@ -20,10 +20,19 @@ export const enum LICENSE_TYPE {
     TIME_BOUND_AND_API_CALLS = 'TIME_BOUND_AND_API_CALLS',
 }
 
+export const enum CLIENT_TYPE {
+    INDEPENDENT_CLIENT = 'INDEPENDENT_CLIENT',
+    THIN_CLIENT = 'THIN_CLIENT',
+}
+
 export interface License extends Document {
     name: string;
     type: LICENSE_TYPE;
+    clientType?: CLIENT_TYPE;
+    activationDelay: number;
     description?: string;
+    clientConnectionId?: number;
+    clientIdentifier?: string;
     version: Version;
     metaData?: Schema.Types.Mixed;
     active: boolean;
@@ -49,6 +58,24 @@ const schema = new Schema(
             type: Schema.Types.String,
             required: true,
             enum: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.NO_OF_API_CALLS, LICENSE_TYPE.TIME_BOUND_AND_API_CALLS],
+        },
+        clientType: {
+            type: Schema.Types.String,
+            required: true,
+            default: CLIENT_TYPE.INDEPENDENT_CLIENT,
+            enum: [CLIENT_TYPE.INDEPENDENT_CLIENT, CLIENT_TYPE.THIN_CLIENT],
+        },
+        clientConnectionId: {
+            type: Schema.Types.Number,
+            required: false,
+        },
+        clientIdentifier: {
+            type: Schema.Types.String,
+            required: false,
+        },
+        activationDelay: {
+            type: Schema.Types.Number,
+            default: 0,
         },
         description: {
             type: Schema.Types.String,
