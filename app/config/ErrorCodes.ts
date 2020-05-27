@@ -16,6 +16,8 @@ export const enum ERROR_CODES {
     USER_NOT_REGISTERED = 'USER_NOT_REGISTERED',
     LICENSE_EXPIRED = 'LICENSE_EXPIRED',
     API_CALLS_EXHAUSTED = 'API_CALLS_EXHAUSTED',
+    ACTIVATION_LIMIT_REACHED = 'ACTIVATION_LIMIT_REACHED',
+    INVALID_CONNECTION = 'INVALID_CONNECTION',
 }
 
 export const ERRORS = {
@@ -95,7 +97,7 @@ export const ERRORS = {
         code: 'USER_NOT_REGISTERED',
     },
     LICENSE_EXPIRED: {
-        status: 400,
+        status: 401,
         title: 'License has expired',
         code: 'LICENSE_EXPIRED',
     },
@@ -103,5 +105,15 @@ export const ERRORS = {
         status: 400,
         title: 'Total API calls have been exhausted',
         code: 'API_CALLS_EXHAUSTED',
+    },
+    ACTIVATION_LIMIT_REACHED: {
+        status: 401,
+        title: 'You have exceeded allowed number of activations in given sync interval. Please try after some time.',
+        code: 'ACTIVATION_LIMIT_REACHED',
+    },
+    INVALID_CONNECTION: {
+        status: 401,
+        title: 'Invalid connection ID',
+        code: 'INVALID_CONNECTION',
     },
 };
