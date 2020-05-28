@@ -38,7 +38,11 @@ export const LicenseController = {
     },
     consume: async function (req: Request, res: Response): Promise<void> {
         const licenseId = req.params.licenseId;
-        await LicenseService.consume(licenseId);
-        new SuccessHandler('valid', res);
+        const licenseRequest = req.body;
+        const license = await LicenseService.consume({
+            licenseIdOrLicense: licenseId,
+            ...licenseRequest,
+        });
+        new SuccessHandler(license, res);
     },
 };
