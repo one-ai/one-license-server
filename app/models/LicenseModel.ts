@@ -20,29 +20,28 @@ export const enum LICENSE_TYPE {
     TIME_BOUND_AND_API_CALLS = 'TIME_BOUND_AND_API_CALLS',
 }
 
-export const enum CLIENT_TYPE {
-    INDEPENDENT_CLIENT = 'INDEPENDENT_CLIENT',
-    THIN_CLIENT = 'THIN_CLIENT',
-}
-
-export interface License extends Document {
-    name: string;
-    type: LICENSE_TYPE;
-    clientType?: CLIENT_TYPE;
-    activationDelay: number;
+export interface License {
+    _id: string;
+    name?: string;
+    type?: LICENSE_TYPE;
+    activationDelay?: number;
     description?: string;
     clientConnectionId?: number;
-    clientIdentifier?: string;
-    version: Version;
+    version?: Version;
     metaData?: Schema.Types.Mixed;
-    active: boolean;
-    expiresAt: Date;
-    syncStrategy: SYNC_STRATEGY;
-    syncTrigger: SYNC_TRIGGER;
+    active?: boolean;
+    expiresAt?: Date;
+    syncStrategy?: SYNC_STRATEGY;
+    syncTrigger?: SYNC_TRIGGER;
     syncInterval?: number;
-    allowedApiCalls?: number;
     apiCallCounter?: number;
+    allowedApiCalls?: number;
+    activationCounter?: number;
+    activationCounterLimit?: number;
+    activationResetDate?: Date;
+    maxSyncRetries?: number;
     lastSync?: Date;
+    lastActivation?: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -58,12 +57,6 @@ const schema = new Schema(
             type: Schema.Types.String,
             required: true,
             enum: [LICENSE_TYPE.TIME_BOUND, LICENSE_TYPE.NO_OF_API_CALLS, LICENSE_TYPE.TIME_BOUND_AND_API_CALLS],
-        },
-        clientType: {
-            type: Schema.Types.String,
-            required: true,
-            default: CLIENT_TYPE.INDEPENDENT_CLIENT,
-            enum: [CLIENT_TYPE.INDEPENDENT_CLIENT, CLIENT_TYPE.THIN_CLIENT],
         },
         clientConnectionId: {
             type: Schema.Types.Number,
@@ -128,6 +121,28 @@ const schema = new Schema(
             type: Schema.Types.Date,
             required: false,
         },
+        lastActivation: {
+            type: Schema.Types.Date,
+            required: false,
+        },
+        activationCounter: {
+            type: Schema.Types.Number,
+            required: false,
+            default: 0,
+        },
+        activationCounterLimit: {
+            type: Schema.Types.Number,
+            required: false,
+            default: 1,
+        },
+        activationResetDate: {
+            type: Schema.Types.Date,
+        },
+        maxSyncRetries: {
+            type: Schema.Types.Number,
+            required: false,
+            default: 1,
+        },
         createdAt: {
             type: Date,
             required: true,
@@ -142,4 +157,4 @@ const schema = new Schema(
     },
 );
 
-export const LicenseModel = model<License>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+export const LicenseModel = model<License & Document>(DOCUMENT_NAME, schema, COLLECTION_NAME);
