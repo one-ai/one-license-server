@@ -37,6 +37,7 @@ export const LicenseValidationSchema = {
             LICENSE_TYPE.TIME_BOUND_AND_API_CALLS,
         ),
         activationDelay: Joi.number().required().min(0),
+        activationCounterLimit: Joi.number().required().min(0),
         description: Joi.string().required().min(1),
         metaData: Joi.object().optional(),
         syncStrategy: Joi.string().valid(SYNC_STRATEGY.HTTP, SYNC_STRATEGY.SFTP),
